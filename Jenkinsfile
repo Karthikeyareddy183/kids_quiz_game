@@ -2,10 +2,21 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS'  // Configure this name in Jenkins Global Tool Configuration
+        nodejs 'NodeJS'
+    }
+
+    environment {
+        RENDER_DEPLOY_HOOK = 'https://api.render.com/deploy/srv-d5ggememcj7s73clgvmg?key=gzuovs5n80E'
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Checking out code...'
+                checkout scm
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 echo '📦 Installing dependencies...'
@@ -27,21 +38,16 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                echo '🔨 Building application...'
-                sh 'npm run build || true'
-            }
-        }
-
-        stage('Deploy') {
+        stage('Deploy to Render') {
             when {
                 branch 'main'
             }
             steps {
-                echo '🚀 Deploying application...'
-                // Add your deployment commands here
-                // Example: sh 'pm2 restart kids-quiz-game'
+                echo '🚀 Deploying to Render...'
+                sh '''
+                    curl -X POST "${RENDER_DEPLOY_HOOK}"
+                '''
+                echo '✅ Deploy triggered! Render is building...'
             }
         }
     }
