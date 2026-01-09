@@ -39,9 +39,6 @@ pipeline {
         }
 
         stage('Deploy to Render') {
-            when {
-                branch 'main'
-            }
             steps {
                 echo '🚀 Deploying to Render...'
                 sh '''
