@@ -9,28 +9,28 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo '📦 Installing dependencies...'
-                bat 'npm install'
+                sh 'npm install'
             }
         }
 
         stage('Lint') {
             steps {
                 echo '🔍 Running linter...'
-                bat 'npm run lint || exit 0'
+                sh 'npm run lint || true'
             }
         }
 
         stage('Test') {
             steps {
                 echo '🧪 Running tests...'
-                bat 'npm test || exit 0'
+                sh 'npm test || true'
             }
         }
 
         stage('Build') {
             steps {
                 echo '🔨 Building application...'
-                bat 'npm run build || exit 0'
+                sh 'npm run build || true'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 echo '🚀 Deploying application...'
                 // Add your deployment commands here
-                // Example: bat 'pm2 restart kids-quiz-game'
+                // Example: sh 'pm2 restart kids-quiz-game'
             }
         }
     }
